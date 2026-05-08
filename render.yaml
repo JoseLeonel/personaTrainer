@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: eforge-api
+    env: node
+    plan: free
+    buildCommand: "cd backend && npm install && npm run build && npx ts-node seed-typeorm.ts && npx ts-node seed-trainer.ts && npx ts-node seed-exercises.js && npx ts-node seed-client.ts"
+    startCommand: "cd backend && npm run start:prod"
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: eforge-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: eforge-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: eforge-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: eforge-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: eforge-db
+          property: database
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: eforge-db
+    plan: free
+    databaseName: personatrainer_db
+    user: postgres

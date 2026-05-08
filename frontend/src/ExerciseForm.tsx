@@ -1,3 +1,4 @@
+import { API_URL } from './config';
 import React, { useState, useEffect } from 'react';
 
 export default function ExerciseForm({ exerciseId, onClose }: { exerciseId: number | null, onClose: (shouldRefresh?: boolean) => void }) {
@@ -36,7 +37,7 @@ export default function ExerciseForm({ exerciseId, onClose }: { exerciseId: numb
   const loadExercise = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/exercises/${exerciseId}`);
+      const res = await fetch(`${API_URL}/exercises/${exerciseId}`);
       if (res.ok) {
         const data = await res.json();
         setFormData(data);
@@ -91,8 +92,8 @@ export default function ExerciseForm({ exerciseId, onClose }: { exerciseId: numb
     try {
       const method = exerciseId ? 'PUT' : 'POST';
       const url = exerciseId 
-        ? `http://localhost:3000/exercises/${exerciseId}`
-        : 'http://localhost:3000/exercises';
+        ? `${API_URL}/exercises/${exerciseId}`
+        : `${API_URL}/exercises`;
 
       const res = await fetch(url, {
         method,

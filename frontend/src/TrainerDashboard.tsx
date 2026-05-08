@@ -1,3 +1,4 @@
+import { API_URL } from './config';
 import { useState, useEffect } from 'react';
 import './index.css';
 import TrainerSidebar from './TrainerSidebar';
@@ -40,9 +41,9 @@ export default function TrainerDashboard({ trainerId, onLogout }: { trainerId?: 
     setIsLoading(true);
     try {
       const [activeRes, pendingRes, codeRes] = await Promise.all([
-        fetch('http://localhost:3000/clients'),
-        fetch('http://localhost:3000/clients/pending'),
-        fetch(`http://localhost:3000/auth/invite-code/${currentTrainerId}`)
+        fetch(`${API_URL}/clients`),
+        fetch(`${API_URL}/clients/pending`),
+        fetch(`${API_URL}/auth/invite-code/${currentTrainerId}`)
       ]);
       const pendingData = await pendingRes.json();
       
@@ -64,7 +65,7 @@ export default function TrainerDashboard({ trainerId, onLogout }: { trainerId?: 
 
   const fetchDashboardMetrics = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/trainer-dashboard/${currentTrainerId}/metrics`);
+      const res = await fetch(`${API_URL}/trainer-dashboard/${currentTrainerId}/metrics`);
       if (res.ok) {
         const data = await res.json();
         setDashboardMetrics(data);
@@ -83,7 +84,7 @@ export default function TrainerDashboard({ trainerId, onLogout }: { trainerId?: 
 
   const generateInviteCode = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/auth/invite-code/${currentTrainerId}`, {
+      const res = await fetch(`${API_URL}/auth/invite-code/${currentTrainerId}`, {
         method: 'POST'
       });
       if (res.ok) {
@@ -97,7 +98,7 @@ export default function TrainerDashboard({ trainerId, onLogout }: { trainerId?: 
 
   const handleApprove = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:3000/clients/${id}/approve`, {
+      const res = await fetch(`${API_URL}/clients/${id}/approve`, {
         method: 'PUT'
       });
       if (res.ok) {
@@ -274,7 +275,7 @@ export default function TrainerDashboard({ trainerId, onLogout }: { trainerId?: 
                 {selectedClientPhotos.map((photo, i) => (
                   <div key={i} className="flex flex-col bg-tertiary rounded-lg overflow-hidden border border-gray-800">
                     <img 
-                      src={`http://localhost:3000${photo.filePath}`} 
+                      src={`${API_URL}${photo.filePath}`} 
                       alt="Progress" 
                       className="w-full h-auto object-cover aspect-square"
                     />

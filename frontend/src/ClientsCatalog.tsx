@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SwipeableClientItem from './SwipeableClientItem';
 import type { ClientData } from './SwipeableClientItem';
+import { API_URL } from './config';
 
 // TODO: Create ClientForm component for Edit/Create
 // import ClientForm from './ClientForm';
@@ -26,7 +27,7 @@ export default function ClientsCatalog() {
   const fetchClients = async (pageNum: number, reset = false) => {
     if (reset) setIsLoading(true);
     try {
-      let url = `http://localhost:3000/clients/trainer/${trainerId}?limit=${limit}&offset=${(pageNum - 1) * limit}`;
+      let url = `${API_URL}/clients/trainer/${trainerId}?limit=${limit}&offset=${(pageNum - 1) * limit}`;
       if (filterName) url += `&search=${encodeURIComponent(filterName)}`;
       if (filterGoal) url += `&objective=${encodeURIComponent(filterGoal)}`;
       if (filterCharge) url += `&chargeType=${encodeURIComponent(filterCharge)}`;
@@ -100,7 +101,7 @@ export default function ClientsCatalog() {
     
     if (window.confirm(`¿Seguro que deseas marcar al cliente como ${newStatus}?`)) {
       try {
-        const res = await fetch(`http://localhost:3000/clients/${id}/status`, {
+        const res = await fetch(`${API_URL}/clients/${id}/status`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ status: newStatus })
@@ -120,7 +121,7 @@ export default function ClientsCatalog() {
     const amount = prompt('Ingrese el monto del pago para este cliente:');
     if (amount && !isNaN(Number(amount))) {
       try {
-        const res = await fetch(`http://localhost:3000/payments/register`, {
+        const res = await fetch(`${API_URL}/payments/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

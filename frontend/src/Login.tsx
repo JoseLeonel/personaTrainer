@@ -1,3 +1,4 @@
+import { API_URL } from './config';
 import { useState } from 'react';
 
 export default function Login({ onLogin, onRegisterClick }: { onLogin: (user: any) => void, onRegisterClick: () => void }) {
@@ -10,7 +11,7 @@ export default function Login({ onLogin, onRegisterClick }: { onLogin: (user: an
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:3000/auth/login', {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })

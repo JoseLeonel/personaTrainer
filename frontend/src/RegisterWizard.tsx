@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from './config';
 
 export default function RegisterWizard({ onComplete, onCancel }: { onComplete: () => void, onCancel?: () => void }) {
   const [step, setStep] = useState(1);
@@ -50,7 +51,7 @@ export default function RegisterWizard({ onComplete, onCancel }: { onComplete: (
         trainingDays: parseInt(formData.trainingDays, 10),
       };
 
-      const res = await fetch('http://localhost:3000/auth/register', {
+      const res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -69,7 +70,7 @@ export default function RegisterWizard({ onComplete, onCancel }: { onComplete: (
         const formData = new FormData();
         formData.append('file', upperPhoto);
         formData.append('photoType', 'UPPER_BODY');
-        await fetch(`http://localhost:3000/clients/${clientId}/photos`, {
+        await fetch(`${API_URL}/clients/${clientId}/photos`, {
           method: 'POST',
           body: formData,
         });
@@ -79,7 +80,7 @@ export default function RegisterWizard({ onComplete, onCancel }: { onComplete: (
         const formData = new FormData();
         formData.append('file', lowerPhoto);
         formData.append('photoType', 'LOWER_BODY');
-        await fetch(`http://localhost:3000/clients/${clientId}/photos`, {
+        await fetch(`${API_URL}/clients/${clientId}/photos`, {
           method: 'POST',
           body: formData,
         });

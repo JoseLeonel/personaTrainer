@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ExerciseForm from './ExerciseForm';
 import SwipeableExerciseItem from './SwipeableExerciseItem';
+import { API_URL } from './config';
 
 interface Exercise {
   id: number;
@@ -30,7 +31,7 @@ export default function ExercisesCatalog() {
   const fetchExercises = async (pageNum: number, reset = false) => {
     if (reset) setIsLoading(true);
     try {
-      let url = `http://localhost:3000/exercises?active=all&limit=${limit}&offset=${(pageNum - 1) * limit}`;
+      let url = `${API_URL}/exercises?active=all&limit=${limit}&offset=${(pageNum - 1) * limit}`;
       if (filterMuscle) url += `&primaryMuscleGroup=${encodeURIComponent(filterMuscle)}`;
       if (filterName) url += `&name=${encodeURIComponent(filterName)}`; // Usar filtro backend
       
@@ -102,7 +103,7 @@ export default function ExercisesCatalog() {
   const handleToggleStatus = async (id: number) => {
     if (window.confirm('¿Seguro que deseas cambiar el estado de este ejercicio?')) {
       try {
-        const res = await fetch(`http://localhost:3000/exercises/${id}/status`, {
+        const res = await fetch(`${API_URL}/exercises/${id}/status`, {
           method: 'PATCH'
         });
         if (res.ok) {
